@@ -11,4 +11,9 @@ void printPi()
     std::cout << "Pi is: " <<  prvt::pi << std::endl;
 }
 
+float pi()
+{
+    return prvt::pi;
+}
+
 }
