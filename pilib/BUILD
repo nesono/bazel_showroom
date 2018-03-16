@@ -8,6 +8,6 @@ cc_library(
                 ["include/*.h"],
                 ),
         includes = ["include"],
-        visibility = ["//visibility:public"],
+		visibility = ["//main:__pkg__"],
     )
 
