@@ -4,6 +4,7 @@
 namespace pi
 {
 void printPi();
+float pi();
 }
 
 #endif
