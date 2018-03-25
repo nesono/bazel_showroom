@@ -13,8 +13,7 @@ cc_library(
         ["googletest-release-1.8.0/googletest/include/gtest/gtest.h"],
     ),
     copts = ["-Iexternal/googletest/googletest-release-1.8.0/googletest"],
-    includes = ["googletest-release-1.8.0/googletest/include",
-             ],
+    includes = ["googletest-release-1.8.0/googletest/include", ],
     visibility = ["//visibility:public"],
     linkstatic = 1,
 )
