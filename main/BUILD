@@ -3,7 +3,7 @@ cc_binary (
     srcs = ["main.cc"],
     deps = [
         "//pilib:pi",
-        "//platformlib:platform",
+        "//platformlib",
     ],
     linkstatic = 1,
 )

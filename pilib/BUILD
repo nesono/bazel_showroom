@@ -7,7 +7,7 @@ cc_library(
     hdrs = glob(
         ["include/*.h"],
     ),
-    includes = ["include"],
+    copts = ["-Ipilib/include",],
     visibility = ["//main:__pkg__"],
 )
 
