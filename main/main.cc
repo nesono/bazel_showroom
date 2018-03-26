@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "pilib.h"
-#include "platform.h"
+#include "pilib/include/pilib.h"
+#include "platformlib/platform.h"
 
 int main(int argc, char** argv)
 {
