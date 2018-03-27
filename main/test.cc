@@ -1,8 +1,12 @@
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
+#include <unistd.h>
 
-#include "pilib/include/pilib.h"
-
-TEST(pitest, getpi)
+TEST(main, get_cwd)
 {
-    ASSERT_FLOAT_EQ(3.1415927f, pi::pi());
+    char cwd[1024];
+
+    ASSERT_NE(nullptr, getcwd(cwd, sizeof(cwd)));
+    std::cout << "Current Working Directory" << std::endl;
+    std::cout << cwd << std::endl;
 }
+
