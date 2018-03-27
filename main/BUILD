@@ -9,8 +9,16 @@ cc_binary (
 )
 
 cc_test (
-    name = "pi_acceptance",
+    name = "test",
     srcs = ["test.cc"],
+    linkstatic = 1,
+    deps = ["@googletest//:gtest"],
+    size = "small",
+)
+
+cc_test (
+    name = "pi_acceptance",
+    srcs = ["pi_at.cc"],
     linkstatic = 1,
     deps = [
         "@googletest//:gtest",
