@@ -4,6 +4,7 @@ cc_binary (
     deps = [
         "//pilib:pi",
         "//platformlib",
+        "//datalib",
     ],
     linkstatic = 1,
 )
@@ -14,6 +15,14 @@ cc_test (
     linkstatic = 1,
     deps = ["@googletest//:gtest"],
     size = "small",
+    copts = select({
+        "//common:linux": ["-pthread"],
+        "//conditions:default": None,
+    }),
+    linkopts = select({
+        "//common:linux": ["-lpthread"],
+        "//conditions:default": None,
+    })
 )
 
 cc_test (
@@ -24,4 +33,12 @@ cc_test (
         "@googletest//:gtest",
         "//pilib:pi"],
     size = "small",
+    copts = select({
+        "//common:linux": ["-pthread"],
+        "//conditions:default": None,
+    }),
+    linkopts = select({
+        "//common:linux": ["-lpthread"],
+        "//conditions:default": None,
+    }),
 )

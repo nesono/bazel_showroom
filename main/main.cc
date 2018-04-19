@@ -2,6 +2,7 @@
 
 #include "pilib/include/pilib.h"
 #include "platformlib/platform.h"
+#include "datalib/datalib.h"
 
 int main(int argc, char** argv)
 {
@@ -10,5 +11,6 @@ int main(int argc, char** argv)
     std::cout << "Hello Ma(i)n" << std::endl;
     pi::printPi();
     platform::printPlatform();
+    std::cout << "Consumed data: " << datalib::consume_data() << std::endl;
     return 0;
 }
