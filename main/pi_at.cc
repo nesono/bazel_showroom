@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "pilib/include/pilib.h"
+#include "pilib/pilib.h"
 
 TEST(pitest, getpi)
 {

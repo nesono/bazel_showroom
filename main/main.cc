@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "pilib/include/pilib.h"
+#include "pilib/pilib.h"
 #include "platformlib/platform.h"
 #include "datalib/datalib.h"
 
