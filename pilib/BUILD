@@ -8,6 +8,8 @@ cc_library(
         ["include/*.h"],
     ),
     copts = ["-Ipilib/include",],
+    strip_include_prefix = "include",
+    include_prefix = 'pilib',
     visibility = ["//main:__pkg__"],
 )
 
