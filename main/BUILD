@@ -5,6 +5,7 @@ cc_binary (
         "//pilib:pi",
         "//platformlib",
         "//datalib",
+        "//tools/buildstamp:build_info",
     ],
     linkstatic = 1,
 )
