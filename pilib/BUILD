@@ -11,5 +11,8 @@ cc_library(
     strip_include_prefix = "include",
     include_prefix = 'pilib',
     visibility = ["//main:__pkg__"],
+    deps = [
+        "//tools/buildstamp:build_info",
+    ],
 )
 
