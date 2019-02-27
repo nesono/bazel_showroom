@@ -14,7 +14,7 @@ cc_test (
     name = "test",
     srcs = ["test.cc"],
     linkstatic = 1,
-    deps = ["@googletest//:gtest"],
+    deps = ["@googletest//:gtest_main"],
     size = "small",
     copts = select({
         "//common:linux": ["-pthread"],
@@ -31,7 +31,7 @@ cc_test (
     srcs = ["pi_at.cc"],
     linkstatic = 1,
     deps = [
-        "@googletest//:gtest",
+        "@googletest//:gtest_main",
         "//pilib:pi"],
     size = "small",
     copts = select({

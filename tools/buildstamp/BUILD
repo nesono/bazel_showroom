@@ -3,7 +3,7 @@ cc_test(
     srcs = ["build_info_test.cc"],
     deps = [
         ":build_info",
-        "@googletest//:gtest",
+        "@googletest//:gtest_main",
     ],
     stamp = True,
     size = "small",

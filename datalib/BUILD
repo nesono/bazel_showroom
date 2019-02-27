@@ -2,7 +2,7 @@ cc_test(
     name = "datatest",
     srcs = ["datatest.cc"],
     deps = [
-        "@googletest//:gtest",
+        "@googletest//:gtest_main",
         ":datalib",
     ],
     size = "small",
