@@ -718,3 +718,39 @@ cc_binary(
 
 Just for fun we removed the include directives from the `cc_library` calls just to see how it will look like - this seems to be the recommended way of how things work inside Google and common practice in the Bazel universe.
 
+## Embedding Version Information with Bazel
+ 
+Bazel takes a lot upon itself to ensure reproducible builds. Reproducible build actions need to produce the exact same output, no matter when and how often they are executed. One example is the redaction of preprocessor macros that we discussed above, where Bazel replaces `__DATE__` and `__TIME__` with redacted values.
+
+In some cases, it would be great to include information about build time, last change time or the git revision, that the code was built from. Such data is changing fairly often and it's easy to imagine that adding such data can destroy cache efficiency easily.
+
+Thus, Bazel provides a mechanism that has to be explicitely activated before such data can be consumed. Once it's activated, there must be particular care being taken about where the data is being consumed, since a change in that data will propagate through the build graph.
+
+The mechanism is often referred to as [linkstamping](https://bazel.build/reference/be/c-cpp#cc_library.linkstamp) and is enabled with the command line option [`--stamp`](https://bazel.build/reference/command-line-reference#flag--stamp) or directly by using the parameter [`stamp`](https://bazel.build/reference/be/c-cpp#cc_binary.stamp) on a Bazel rule.
+
+**NB**: The Bazel documentation is wrong about the `stamp` attribute - it can only take `0/False` or `1/True`.
+
+You can find the code for linkstamping in the `tools/buildstamp` sub directory. There are two types of stamping available:
+1. Stamp of the last affective change of the target (and its dependencies)
+2. Stamp of when the target was built (and whatever information was available at the time)
+
+### Linkstamping with Bazel
+
+Linkstamping allows the consumer to track affecting changes to targets and only renew the stamp when the target had to be rebuilt. It's easiest to imagine if you think of several independent binaries in one repo. The linkstamp of the target will always contain the information of when the target was last modified. For example, if there are multiple commits that changed target 1 but not targets 2 and 3, only the linkstamp of target 1 will be updated.
+
+By enabling sub commands during Bazel execution with the build flag `-s`, we can see how Bazel injects the linkstamp data.
+```Bash
+SUBCOMMAND: # //tools/buildstamp:build_info_last_change_test [action 'Compiling tools/buildstamp/build_info_last_change.cc', configuration: 685bce73e2d23d96b0c45675f8d7aa29756fe53e3d3158fd157d4caeae694cf4, execution platform: @local_config_platform//:host]
+(cd /home/joissing/.cache/bazel/_bazel_joissing/b884c2365cfaeb5927502f648f28a682/execroot/bazel_showroom && \
+  exec env - \
+    PATH=/home/joissing/.cache/bazelisk/downloads/bazelbuild/bazel-5.0.0-linux-x86_64/bin:/home/joissing/av/argo/scripts:/home/joissing/python/bin:/home/joissing/.vscode-server/bin/899d46d82c4c95423fb7e10e68eba52050e30ba3/bin:/home/joissing/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/joissing/.fzf/bin:/home/joissing/bin/:/home/joissing/.aws/bin/:/home/joissing/.local/bin/:/usr/local/go/bin:/home/joissing/av/argo/tools/hub/bin:/home/joissing/nesono-bin \
+    PWD=/proc/self/cwd \
+  /usr/bin/gcc -U_FORTIFY_SOURCE -fstack-protector -Wall -Wunused-but-set-parameter -Wno-free-nonheap-object -fno-omit-frame-pointer '-std=c++0x' '-DGPLATFORM="local"' '-DBUILD_COVERAGE_ENABLED=0' '-DG3_TARGET_NAME="//tools/buildstamp:build_info_last_change_test"' '-DG3_BUILD_TARGET="bazel-out/k8-fastbuild/bin/tools/buildstamp/build_info_last_change_test"' -include bazel-out/k8-fastbuild/include/build-info-nonvolatile.h -include bazel-out/k8-fastbuild/include/build-info-volatile.h -I. -fno-canonical-system-headers -Wno-builtin-macro-redefined '-D__DATE__="redacted"' '-D__TIMESTAMP__="redacted"' '-D__TIME__="redacted"' -c tools/buildstamp/build_info_last_change.cc -o bazel-out/k8-fastbuild/bin/tools/buildstamp/_objs/build_info_last_change_test/tools/buildstamp/build_info_last_change.o)
+```
+
+Note the additional parameter `-include bazel-out/k8-fastbuild/include/build-info-volatile.h`. This file contains the definitions that will be available to the file that is identified in the `linkstamp` parameter.
+```Cpp
+#define BUILD_SCM_REVISION "771b9833a662274d5370c337db1d860b1b53e369"
+#define BUILD_SCM_STATUS "modified"
+#define BUILD_TIMESTAMP 1646925975
+```

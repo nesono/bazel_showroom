@@ -1,7 +1,7 @@
-#include "tools/buildstamp/build_info.h"
+#include "tools/buildstamp/build_info_linkstamp.h"
 
 #include "gtest/gtest.h"
-#include <cstring>
+#include <string>
 
 TEST(BuildInfo, CheckBuildRevision)
 {
@@ -11,8 +11,8 @@ TEST(BuildInfo, CheckBuildRevision)
     EXPECT_STRNE("", buildStat);
     auto buildTs = buildTimestamp();
     EXPECT_GT(buildTs, 665);
-    auto buildEmbLab = buildEmbedLabel();
-    EXPECT_STREQ("", buildEmbLab);
+    auto buildEmbLabel = buildEmbedLabel();
+    EXPECT_STREQ("", buildEmbLabel);
     auto buildBr = buildBranch();
     EXPECT_STRNE(buildBr, "");
 }

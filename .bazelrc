@@ -1,3 +1,4 @@
 build --workspace_status_command tools/buildstamp/get_workspace_status.sh --stamp
+build --embed_label "test label"
 # added for making sure to test linkstamping with action invalidation
 build --disk_cache=~/bazel_remote_disk_cache

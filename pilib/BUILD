@@ -12,7 +12,7 @@ cc_library(
     include_prefix = 'pilib',
     visibility = ["//main:__pkg__"],
     deps = [
-        "//tools/buildstamp:build_info",
+        "//tools/buildstamp:build_info_last_change",
     ],
 )
 
