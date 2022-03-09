@@ -1,5 +1,5 @@
-#ifndef WERKSTATT_TOOLS_BUILDSTAMP_BUILD_INFO_H
-#define WERKSTATT_TOOLS_BUILDSTAMP_BUILD_INFO_H
+#ifndef TOOLS_BUILDSTAMP_BUILD_INFO_H
+#define TOOLS_BUILDSTAMP_BUILD_INFO_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -14,5 +14,5 @@ extern const char* buildBranch();
 #ifdef __cplusplus
 }
 #endif
-#endif  // WERKSTATT_TOOLS_BUILDSTAMP_BUILD_INFO_H
+#endif  // TOOLS_BUILDSTAMP_BUILD_INFO_H
 
