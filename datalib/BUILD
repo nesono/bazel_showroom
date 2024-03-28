@@ -1,11 +1,9 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+
 cc_test(
     name = "datatest",
-    srcs = ["datatest.cc"],
-    deps = [
-        "@googletest//:gtest_main",
-        ":datalib",
-    ],
     size = "small",
+    srcs = ["datatest.cc"],
     copts = select({
         "//common:linux": ["-pthread"],
         "//conditions:default": None,
@@ -14,6 +12,10 @@ cc_test(
         "//common:linux": ["-lpthread"],
         "//conditions:default": None,
     }),
+    deps = [
+        ":datalib",
+        "@googletest//:gtest_main",
+    ],
 )
 
 cc_library(

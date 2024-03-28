@@ -1,3 +1,5 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
+
 exports_files([
     "generate_version_built_cc.sh",
 ])
@@ -17,8 +19,8 @@ genrule(
 cc_library(
     name = "build_info_built",
     srcs = [
-        "build_info_stable.h",
         "build_info_built.cc",
+        "build_info_stable.h",
     ],
     hdrs = ["build_info_built.h"],
     visibility = ["//visibility:public"],
@@ -26,19 +28,19 @@ cc_library(
 
 cc_test(
     name = "build_info_built_test",
+    size = "small",
     srcs = ["build_info_built_test.cc"],
+    stamp = 1,
     deps = [
         ":build_info_built",
         "@googletest//:gtest_main",
     ],
-    stamp = True,
-    size = "small",
 )
 
 cc_binary(
     name = "print_build_info_built",
     srcs = ["print_build_info_built.cc"],
-    stamp = True,
+    stamp = 1,
     deps = [
         ":build_info_built",
     ],
@@ -46,27 +48,27 @@ cc_binary(
 
 cc_library(
     name = "build_info_last_change",
-    linkstamp = "build_info_last_change.cc",
     hdrs = ["build_info_last_change.h"],
-    alwayslink = 1,
+    linkstamp = "build_info_last_change.cc",
     visibility = ["//visibility:public"],
+    alwayslink = 1,
 )
 
 cc_test(
     name = "build_info_last_change_test",
+    size = "small",
     srcs = ["build_info_last_change_test.cc"],
+    stamp = 1,
     deps = [
         ":build_info_last_change",
         "@googletest//:gtest_main",
     ],
-    stamp = True,
-    size = "small",
- )
+)
 
 cc_binary(
     name = "print_build_info_last_change",
     srcs = ["print_build_info_last_change.cc"],
-    stamp = True,
+    stamp = 1,
     deps = [
         ":build_info_last_change",
     ],

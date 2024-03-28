@@ -1,4 +1,5 @@
-load('//hello_rule:hello.bzl', 'hello_cc_binary', 'hello_cc_library')
+load("@rules_cc//cc:defs.bzl", "cc_binary")
+load("//hello_rule:hello.bzl", "hello_cc_binary", "hello_cc_library")
 
 hello_cc_binary(
     name = "world",
@@ -16,5 +17,5 @@ cc_binary(
     ],
     deps = [
         ":mathilda",
-    ]
+    ],
 )
