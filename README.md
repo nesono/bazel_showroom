@@ -349,19 +349,48 @@ Note the use of the filegroup rule for declaring the data to Bazel. We consume t
 Now where does Bazel put that file to? I am sure you now have the means to find that out, but let us introduce another common practice to do that. We can ask Bazel to not actual run the binary but put everything it would have done into a script using the following command:
 
 ```bash
-bazel build //... # might be required before calling run below (probably a bug)
-```
-
-```bash
-bazel run --script_path=run.sh //datatest
+bazel run --script_path=run.sh //datalib:datatest
 ```
 
 This is what `run.sh` contains on my machine:
 
 ```bash
-#!/bin/sh
-cd /private/var/tmp/_bazel_kuze/7c16ad40d245d149d39e82eda2a03870/execroot/__main__/bazel-out/darwin-fastbuild/bin/datatest/datatest.runfiles/__main__ && \
-  exec /private/var/tmp/_bazel_kuze/7c16ad40d245d149d39e82eda2a03870/execroot/__main__/bazel-out/darwin-fastbuild/bin/datatest/datatest "$@"
+#!/bin/bash
+cd /home/jissing/.cache/bazel/_bazel_jissing/59d9fff5e0a8f6de66ad7028c3109e69/execroot/_main && \
+  exec env \
+    -u JAVA_RUNFILES \
+    -u RUNFILES_DIR \
+    -u RUNFILES_MANIFEST_FILE \
+    -u RUNFILES_MANIFEST_ONLY \
+    -u TEST_SRCDIR \
+    BUILD_WORKING_DIRECTORY=/home/jissing/bazel_showroom \
+    BUILD_WORKSPACE_DIRECTORY=/home/jissing/bazel_showroom \
+    JAVA_RUNFILES=bazel-out/k8-fastbuild/bin/datalib/datatest.runfiles \
+    LD_LIBRARY_PATH=:/var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void \
+    PATH=/home/jissing/.cache/bazelisk/downloads/bazelbuild/bazel-7.2.1-linux-x86_64/bin:/home/jissing/.local/share/nvim/mason/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/home/jissing/.nvm/versions/node/v19.9.0/bin:/home/jissing/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/jissing/.local/share/kitty-ssh-kitten/kitty/bin:/home/jissing/.fzf/bin:/home/jissing/nesono-bin:/home/jissing/.local/bin:/home/jissing/bin:/home/jissing/go/bin \
+    PYTHON_RUNFILES=bazel-out/k8-fastbuild/bin/datalib/datatest.runfiles \
+    RUNFILES_DIR=bazel-out/k8-fastbuild/bin/datalib/datatest.runfiles \
+    RUN_UNDER_RUNFILES=1 \
+    TEST_BINARY=datalib/datatest \
+    TEST_INFRASTRUCTURE_FAILURE_FILE=bazel-out/k8-fastbuild/testlogs/datalib/datatest/test.infrastructure_failure \
+    TEST_LOGSPLITTER_OUTPUT_FILE=bazel-out/k8-fastbuild/testlogs/datalib/datatest/test.raw_splitlogs/test.splitlogs \
+    TEST_PREMATURE_EXIT_FILE=bazel-out/k8-fastbuild/testlogs/datalib/datatest/test.exited_prematurely \
+    TEST_SIZE=small \
+    TEST_SRCDIR=bazel-out/k8-fastbuild/bin/datalib/datatest.runfiles \
+    TEST_TARGET=//datalib:datatest \
+    TEST_TIMEOUT=60 \
+    TEST_TMPDIR=_tmp/0802db4e662bf53d137618b3e510ab04 \
+    TEST_UNDECLARED_OUTPUTS_ANNOTATIONS=bazel-out/k8-fastbuild/testlogs/datalib/datatest/test.outputs_manifest/ANNOTATIONS \
+    TEST_UNDECLARED_OUTPUTS_ANNOTATIONS_DIR=bazel-out/k8-fastbuild/testlogs/datalib/datatest/test.outputs_manifest \
+    TEST_UNDECLARED_OUTPUTS_DIR=bazel-out/k8-fastbuild/testlogs/datalib/datatest/test.outputs \
+    TEST_UNDECLARED_OUTPUTS_MANIFEST=bazel-out/k8-fastbuild/testlogs/datalib/datatest/test.outputs_manifest/MANIFEST \
+    TEST_UNDECLARED_OUTPUTS_ZIP=bazel-out/k8-fastbuild/testlogs/datalib/datatest/test.outputs/outputs.zip \
+    TEST_UNUSED_RUNFILES_LOG_FILE=bazel-out/k8-fastbuild/testlogs/datalib/datatest/test.unused_runfiles_log \
+    TEST_WARNINGS_OUTPUT_FILE=bazel-out/k8-fastbuild/testlogs/datalib/datatest/test.warnings \
+    TEST_WORKSPACE=_main \
+    TZ=UTC \
+    XML_OUTPUT_FILE=bazel-out/k8-fastbuild/testlogs/datalib/datatest/test.xml \
+  external/bazel_tools/tools/test/test-setup.sh datalib/datatest "$@"
 ```
 
 The structure of the working directory seems familiar, doesn't it? Let's check the contents of the directory:
